@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 
 import { Form, Formik } from "formik";
+import { bgColor, primaryColor, shadow } from "../const/colors-shadows";
 import { useContext, useState } from "react";
 
 import Button from "../components/Button";
@@ -9,6 +10,7 @@ import { REGISTER_PATH } from "../routes/const";
 import { SlLogin } from "react-icons/sl";
 import { UserContext } from "../context/UserContext";
 import styled from "styled-components";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { userLogin } from "../api/userApi";
 
@@ -36,6 +38,7 @@ const Login = () => {
     try {
       const response = await userLogin(user);
       handleLogIn(response);
+      toast.success("Logged in");
     } catch (error: any) {
       setError(true);
     }
@@ -73,12 +76,13 @@ const Wrapper = styled.div`
   width: fit-content;
   height: 350px;
   padding: 20px;
-  border: 2px solid #7cb6f3;
+  border: 2px solid ${primaryColor};
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f5f4f4;
+  background-color: ${bgColor};
+  box-shadow: ${shadow};
 `;
 
 const StyledForm = styled(Form)`

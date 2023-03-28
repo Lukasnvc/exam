@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react"
 
 type MainRoute = {
   path: '/' | '/add';
-  Component: () => JSX.Element
+  Component: React.LazyExoticComponent<() => JSX.Element>;
 }
 
 export type MainLayoutRoutes = {
@@ -12,7 +12,7 @@ export type MainLayoutRoutes = {
 
 type AuthRoute = {
   path: '/' | '/register';
-  Component: () => JSX.Element
+  Component: React.LazyExoticComponent<() => JSX.Element>;
 }
 
 export type AuthLayoutRoutes = {

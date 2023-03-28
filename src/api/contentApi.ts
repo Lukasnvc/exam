@@ -3,16 +3,13 @@ import { Skill } from "./userTypes";
 import axios from "axios";
 const CONTENT_URL = `${BASE_URL}v1/content/skills`;
 
-export const fetchContent = (token: string) => {
-  return axios.get(CONTENT_URL, {
+export const fetchContent = async (token: string) => {
+  const response = await axios.get(CONTENT_URL, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   })
-    .then((response) => response.data)
-    .then(data => {
-      return(data);
-    })
+  return response.data
 }
 
 export const postContent = (skill: Skill ,token: string) => {

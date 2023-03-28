@@ -1,6 +1,7 @@
 import { ErrorMessage, Field, FieldProps } from "formik";
-import React, { FC } from "react";
 
+import { FC } from "react";
+import { inputBgColor } from "../const/colors-shadows";
 import styled from "styled-components";
 
 type Props = {
@@ -27,7 +28,7 @@ const StyledInput = styled.input<{ error?: string }>`
   font-size: 16px;
   border-radius: 4px;
   color: black;
-  background-color: #bab8b8;
+  background-color: ${inputBgColor};
   padding: 10px 14px;
   border: none;
   outline: none;

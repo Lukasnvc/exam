@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 
 import { Form, Formik } from "formik";
+import { bgColor, primaryColor, shadow } from "../const/colors-shadows";
 
 import Button from "../components/Button";
 import FormikInput from "../components/FormikInput";
@@ -36,11 +37,9 @@ const Login = () => {
   const navigate = useNavigate();
   const handleSubmit = async (user: UserLogin) => {
     delete user.confirm_password;
-    console.log(user);
-
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await userRegister(user);
-      console.log(response);
     } catch (error: any) {
       setError(true);
     }
@@ -81,12 +80,13 @@ const Wrapper = styled.div`
   width: fit-content;
   height: 350px;
   padding: 20px;
-  border: 2px solid #7cb6f3;
+  border: 2px solid ${primaryColor};
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f5f4f4;
+  background-color: ${bgColor};
+  box-shadow: ${shadow};
 `;
 
 const StyledForm = styled(Form)`

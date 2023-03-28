@@ -1,31 +1,42 @@
-import React, { useEffect, useState } from "react";
-
 import Card from "../components/Card";
+import { Circles } from "react-loader-spinner";
 import { Skill } from "../api/userTypes";
-import { fetchContent } from "../api/contentApi";
+import { UserContext } from "../context/UserContext";
 import styled from "styled-components";
+import { useContext } from "react";
+import { useGetContent } from "../hooks/useSkills";
 
 const Home = () => {
-  const [list, setList] = useState([]);
-  const userToken = JSON.parse(localStorage.getItem("userToken") || "{}");
-  useEffect(() => {
-    fetchContent(userToken)
-      .then((data) => {
-        setList(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [userToken]);
-
-  console.log(list);
+  const { userToken } = useContext(UserContext);
+  const { data, isLoading } = useGetContent(userToken);
+  const skills = data || [];
 
   return (
     <Wrapper>
-      {list.length > 0 &&
-        list.map((item: Skill, index) => (
+      {isLoading ? (
+        <div
+          style={{
+            width: "100vw",
+            height: "80vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <Circles
+            height="80"
+            width="80"
+            color="#7cb6f3"
+            ariaLabel="circles-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+          />
+        </div>
+      ) : (
+        skills.map((item: Skill, index: number) => (
           <Card key={item.title + index} title={item.title} description={item.description} />
-        ))}
+        ))
+      )}
     </Wrapper>
   );
 };

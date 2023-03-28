@@ -1,13 +1,18 @@
 import * as Yup from "yup";
 
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
+import { bgColor, inputBgColor, primaryColor, shadow } from "../const/colors-shadows";
 
 import Button from "../components/Button";
 import FormikInput from "../components/FormikInput";
-import React from "react";
+import { HOME_PATH } from "../routes/const";
 import { Skill } from "../api/userTypes";
+import { UserContext } from "../context/UserContext";
 import { postContent } from "../api/contentApi";
 import styled from "styled-components";
+import toast from "react-hot-toast";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const loginFormInitialValues: Skill = {
   title: "",
@@ -20,9 +25,13 @@ const loginValidationSchema: Yup.ObjectSchema<Skill> = Yup.object().shape({
 });
 
 const AddPage = () => {
-  const userToken = JSON.parse(localStorage.getItem("userToken") || "{}");
+  const navigate = useNavigate();
+  const { userToken } = useContext(UserContext);
   const handleSubmit = (skill: Skill) => {
+    console.log(skill);
     postContent(skill, userToken);
+    toast.success("Skill added");
+    navigate(HOME_PATH);
   };
   return (
     <Wrapper>
@@ -33,12 +42,10 @@ const AddPage = () => {
         <StyledForm>
           <Title>Add skill</Title>
           <FormikInput name="title" type="text" placeholder="Title" />
-          <FormikInput name="description" type="text" placeholder="Description" />
-          <BtnWrapper>
-            <Button isBlue type="submit">
-              Add
-            </Button>
-          </BtnWrapper>
+          <Field name="description" as={StyledTextArea} placeholder="Description" />
+          <Button isBlue type="submit">
+            Add
+          </Button>
         </StyledForm>
       </Formik>
     </Wrapper>
@@ -49,29 +56,28 @@ export default AddPage;
 
 const Wrapper = styled.div`
   width: fit-content;
-  height: 350px;
-  padding: 20px;
-  border: 2px solid #7cb6f3;
+  height: 70vh;
+  width: 80vw;
+  margin: 0 auto;
+  padding: 40px;
+  border: 2px solid ${primaryColor};
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f5f4f4;
+  background-color: ${bgColor};
+  box-shadow: ${shadow};
 `;
 
 const StyledForm = styled(Form)`
-  max-width: 200px;
   margin: 60px auto;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  width: 100%;
   gap: 16px;
 `;
 
-const BtnWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
 const Title = styled.p`
   font-size: 24px;
   text-align: center;
@@ -84,9 +90,14 @@ const Title = styled.p`
   }
 `;
 
-const StyledError = styled.p`
+const StyledTextArea = styled.textarea`
+  width: 100%;
+  height: 100%;
   font-size: 16px;
-  color: red;
-  text-align: center;
-  margin-bottom: 8px;
+  border-radius: 4px;
+  color: black;
+  background-color: ${inputBgColor};
+  padding: 10px 14px;
+  border: none;
+  outline: none;
 `;
